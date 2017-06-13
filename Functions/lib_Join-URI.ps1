@@ -13,7 +13,7 @@ Function Join-URI
     
     if($child.StartsWith('/'))
     {
-        $child = $Parent.Substring(1,$Parent.Length-1)
+        $child = $child.Substring(1,$child.Length-1)
     }
     $Return = [String]::Format("{0}/{1}",$Parent,$child)
     #write-verbose "returning '$return'"

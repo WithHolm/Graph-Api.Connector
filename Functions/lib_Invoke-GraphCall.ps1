@@ -11,7 +11,9 @@ Function Invoke-GraphCall
         [Parameter(Mandatory=$true)]
         [String]$Call,
 
-        [String]$filter
+        [String]$filter,
+
+        [Switch]$ReturnCallURL
     )
 
     #Test Version
@@ -56,12 +58,15 @@ Function Invoke-GraphCall
     }
     catch
     {
-        throw "Error creating the Accesstoken: $_"
+        throw $_
     }
     
 
     $CallURI = Join-URI -Parent $resource -child $query
-    
+    if($ReturnCallURL)
+    {
+        return $CallURI
+    }
     if($Method -eq "Get")
     {
         $authHeader = @{
@@ -80,13 +85,7 @@ Function Invoke-GraphCall
         }
         catch 
         {
-            $response = $_.Exception.Response.StatusCode.value__
-            $reponsestring = $_.Exception.Response.StatusCode
-            switch ($response)
-            {
-                404{Write-error "The query '$query' cannot be found at '$resource': $_"}
-                default{write-error "error with '$CallURI': $reponsestring ($response)"}
-            }
+            $_
         }
     }
 }
