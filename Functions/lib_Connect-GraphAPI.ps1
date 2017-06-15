@@ -92,7 +92,7 @@ Function Connect-GraphAPI
         $return = $AzureRMProfile.Login($azureaccount,$AzureEnviorment,$TenantId,$password)
         [Microsoft.Open.Azure.AD.CommonLibrary.PSAzureContext]$return.context
         Write-verbose "Logged in. Account:'$($return.context.Account.Id)', Environment:'$($return.context.Environment.Name)', Tenant:'$($return.context.Tenant.Id)', domian name: '$($return.context.Tenant.Domain)'"
-        $return
+        #$return
     }
     catch
     {

@@ -2,23 +2,34 @@ Function Invoke-GraphCall
 {
     [cmdletbinding()]
     param(
-        [String]$Version = $Script:GraphVersion,
+        [String]$Version = (Get-GraphAPIConfigFile).GraphVersion.Selected,
+        
+        #Get Parameters
+        [Parameter(Mandatory,ParameterSetName='Get')]
+        [Switch]$Get,
 
-        [Parameter(Mandatory=$true)]
-        [ValidateSet("Get")]
-        [String]$Method,
+        #post Parameters
+        [Parameter(Mandatory,ParameterSetName='Post')]
+        [Switch]$Post,
+        [Parameter(ParameterSetName='Post')]
+        [String]$PostBody,
 
         [Parameter(Mandatory=$true)]
         [String]$Call,
 
         [String]$filter,
 
+        [String]$Expand,
+
         [Switch]$ReturnCallURL
     )
 
+    $OdataTag = ""
+
     #Test Version
+    #Write-Verbose "Version: $version"
     if($Version -notlike "beta")
-    {
+    {       
         try
         {
             $pattern = '[a-zA-Z]'
@@ -36,7 +47,6 @@ Function Invoke-GraphCall
     {
         $Version = $Version.ToLower()
     }
-    
     $query = join-uri -Parent $Version -child $Call
 
     #If filter is defined
@@ -48,6 +58,7 @@ Function Invoke-GraphCall
 
 
     Write-verbose "Query: $query"
+    #testing if DLLs are loaded
     try
     {
         $endpoint = [Microsoft.Open.Azure.AD.CommonLibrary.AzureEnvironment+Endpoint]::MsGraphEndpointResourceId
@@ -55,20 +66,26 @@ Function Invoke-GraphCall
         [Microsoft.Open.Azure.AD.CommonLibrary.IAccessToken]$Accesstoken = [Microsoft.Open.Azure.AD.CommonLibrary.AzureSession]::GetAccessToken($endpoint)
         $Auth = $Accesstoken.AuthorizeRequest($endpoint)
         $TenantID = $Accesstoken.TenantId
+        if([String]::IsNullOrEmpty($auth))
+        {
+            Throw "The authkey was empty!"
+        }
     }
     catch
     {
-        throw $_
+        throw "Unable to create authentication token. Have you logged on? Error: $_"
     }
     
-
     $CallURI = Join-URI -Parent $resource -child $query
+    #$CallURI +='$select=passwordPolicies'
     if($ReturnCallURL)
     {
         return $CallURI
     }
-    if($Method -eq "Get")
+    
+    if($get)
     {
+        #Write-Verbose "Getting data from $calluri"
         $authHeader = @{
             'Content-Type'='application\json'
             'Authorization'=$Auth
@@ -77,15 +94,43 @@ Function Invoke-GraphCall
         try
         {
             $return = Invoke-RestMethod -Method Get -Uri $CallURI -Headers $authHeader
-            if($return.value -eq $null)
+            $OdataTag = $($return."@odata.context")
+            if($return.value -ne $null)
             {
-                return $return
+                $return = $return.value
             }
-            return $return.value
         }
         catch 
         {
-            $_
+            $_.exeption
         }
     }
+    if($post)
+    {
+        #Write-Verbose "Posting data"
+        $authHeader = @{
+            'Content-Type' ='application\json'
+            'Authorization'=$Auth
+        }
+        
+        try
+        {
+            if($PostBody -ne $null)
+            {
+                Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader -Body $PostBody
+            }
+            Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader
+            $OdataTag = $($return."@odata.context")
+            if($return.value -ne $null)
+            {
+                $return = $return.value
+            }
+        }
+        catch 
+        {
+            $_.exeption
+        }
+    }
+
+    return $return|Add-OdataToReturn -odatatag $OdataTag
 }
