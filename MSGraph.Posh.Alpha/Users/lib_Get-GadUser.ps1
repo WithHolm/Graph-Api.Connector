@@ -23,4 +23,7 @@ Function Get-GadUser
     {
         $return = Invoke-GraphCall -Call "users" -Method Get
     }  
+
+
+    return $return
 }

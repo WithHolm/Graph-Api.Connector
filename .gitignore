@@ -1,2 +1,6 @@
 
 Tests/Azurecred\.xml
+
+PesterTests/Core/AzureCred\.xml
+
+MSGraph\.Posh\.Alpha/Config\.json

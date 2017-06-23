@@ -2,10 +2,16 @@ Function Join-URI
 {
     [cmdletbinding()]
     param(
+        [ValidateNotNullOrEmpty()]
     [String]$Parent,
+        [ValidateNotNullOrEmpty()]
     [String]$child
     )
 
+    if([String]::IsNullOrEmpty($Parent) -or [String]::IsNullOrEmpty($child))
+    {
+        Throw "Need both parent and child to be able to join them"
+    }
     if($Parent.EndsWith('/'))
     {
         $Parent = $Parent.Substring(0,$Parent.Length-1)

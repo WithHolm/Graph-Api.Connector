@@ -3,16 +3,12 @@ Function Invoke-GraphCall
     [cmdletbinding()]
     param(
         [String]$Version = (Get-GraphAPIConfigFile).GraphVersion.Selected,
-        
-        #Get Parameters
-        [Parameter(Mandatory,ParameterSetName='Get')]
-        [Switch]$Get,
 
-        #post Parameters
-        [Parameter(Mandatory,ParameterSetName='Post')]
-        [Switch]$Post,
-        [Parameter(ParameterSetName='Post')]
-        [String]$PostBody,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet("Get", "Post")]
+        [String]$Method,
+
+        [Object]$Body,
 
         [Parameter(Mandatory=$true)]
         [String]$Call,
@@ -83,7 +79,7 @@ Function Invoke-GraphCall
         return $CallURI
     }
     
-    if($get)
+    if($Method -eq "Get")
     {
         #Write-Verbose "Getting data from $calluri"
         $authHeader = @{
@@ -105,7 +101,7 @@ Function Invoke-GraphCall
             $_.exeption
         }
     }
-    if($post)
+    if($Method -eq "Post")
     {
         #Write-Verbose "Posting data"
         $authHeader = @{
@@ -115,9 +111,9 @@ Function Invoke-GraphCall
         
         try
         {
-            if($PostBody -ne $null)
+            if($Body -ne $null)
             {
-                Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader -Body $PostBody
+                Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader -Body $Body
             }
             Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader
             $OdataTag = $($return."@odata.context")
