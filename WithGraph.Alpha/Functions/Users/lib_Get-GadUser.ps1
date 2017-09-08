@@ -2,7 +2,7 @@ Function Get-GadUser
 {
     [cmdletbinding()]
     param(
-        [String]$upn,
+        [String]$ID,
         [String]$Search,
         [String]$Filter,
         [Switch]$Detailed
@@ -10,9 +10,9 @@ Function Get-GadUser
     
     $Query = "Users"
 
-    if(!([String]::IsNullOrEmpty($upn)))
+    if(!([String]::IsNullOrEmpty($ID)))
     {
-        $Query += "\$upn"
+        $Query += "\$ID"
     }
 
     if(!([String]::IsNullOrEmpty($Filter)))

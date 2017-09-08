@@ -66,16 +66,23 @@ Function Connect-GraphAPI
         $azureaccount.Id = $Credentials.UserName
         $password = $Credentials.Password
         $azureaccount.Type = [Microsoft.Open.Azure.AD.CommonLibrary.AzureAccount+AccountType]::User
+        Write-verbose "Logging in with ID:'$( $azureaccount.id)', Type:'$($azureaccount.Type)'"
     }
     elseif($PsCmdlet.ParameterSetName -eq "CertificateThumbprint")
     {
         $azureaccount.Type = [Microsoft.Open.Azure.AD.CommonLibrary.AzureAccount+AccountType]::ServicePrincipal
         $azureaccount.id = $ApplicationId
         $azureaccount.SetProperty([Microsoft.Open.Azure.AD.CommonLibrary.AzureAccount+property]::CertificateThumbprint,$CertificateThumbprint)
+        Write-verbose "Logging in with ID:'$( $azureaccount.id)', Type:'$($azureaccount.Type)'"
     }
     else
     {
+        if($Host.name -like "*Visual studio*")
+        {
+            Throw 'Cannot load adal window with vscode. please use -credentials $(get-credential) or cert thumbprint'
+        }
         $azureaccount.Type = [Microsoft.Open.Azure.AD.CommonLibrary.AzureAccount+AccountType]::User
+        Write-verbose "Logging in with ID:'$( $azureaccount.id)', Type:'$($azureaccount.Type)'"
     }
 
     if([Microsoft.Open.Azure.AD.CommonLibrary.AzureRmProfileProvider]::Instance.Profile -eq $null)
@@ -88,7 +95,7 @@ Function Connect-GraphAPI
                 [Microsoft.Open.Azure.AD.CommonLibrary.RMProfileClient]::new([Microsoft.Open.Azure.AD.CommonLibrary.AzureRmProfileProvider]::Instance.Profile)
     try
     {
-        Write-verbose "Logging in with ID:'$( $azureaccount.id)', Type:'$($azureaccount.Type)'"
+        
         $return = $AzureRMProfile.Login($azureaccount,$AzureEnviorment,$TenantId,$password)
         [Microsoft.Open.Azure.AD.CommonLibrary.PSAzureContext]$return.context
         Write-verbose "Logged in. Account:'$($return.context.Account.Id)', Environment:'$($return.context.Environment.Name)', Tenant:'$($return.context.Tenant.Id)', domian name: '$($return.context.Tenant.Domain)'"

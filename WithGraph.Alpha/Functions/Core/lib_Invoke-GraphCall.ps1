@@ -2,28 +2,41 @@ Function Invoke-GraphCall
 {
     [cmdletbinding()]
     param(
-        [String]$Version = (Get-GraphAPIConfigFile).GraphVersion.Selected,
+        [Parameter(Mandatory=$false)]
+            [String]$Version,
 
         [Parameter(Mandatory=$true)]
         [ValidateSet("Get", "Post")]
-        [String]$Method,
+            [String]$Method,
 
-        [Object]$Body,
+        [Parameter(Mandatory=$false)]
+            $Body,
 
         [Parameter(Mandatory=$true)]
-        [String]$Call,
+            [String]$Call,
 
-        [String]$filter,
+        [Parameter(Mandatory=$false)]
+            [String]$filter,
 
-        [String]$Expand,
+        [Parameter(Mandatory=$false)]
+            [String]$Expand,
 
-        [Switch]$ReturnCallURL
+        [Parameter(Mandatory=$false)]
+            [Switch]$ReturnCallURL,
+
+        [Parameter(Mandatory=$false)]
+            [Switch]$async,
+
+            [String]$baseURL
     )
 
+    if([String]::IsNullOrEmpty($version))
+    {
+        $version = get-graphversion
+    }
     $OdataTag = ""
 
     #Test Version
-    #Write-Verbose "Version: $version"
     if($Version -notlike "beta")
     {       
         try
@@ -86,7 +99,10 @@ Function Invoke-GraphCall
             'Content-Type'='application\json'
             'Authorization'=$Auth
         }
-        
+        if($async)
+        {
+            Throw "Async is not supported with get request atm.."
+        }
         try
         {
             $return = Invoke-RestMethod -Method Get -Uri $CallURI -Headers $authHeader
@@ -105,17 +121,39 @@ Function Invoke-GraphCall
     {
         #Write-Verbose "Posting data"
         $authHeader = @{
-            'Content-Type' ='application\json'
+            'Content-Type' ='application/json'
             'Authorization'=$Auth
         }
         
         try
         {
-            if($Body -ne $null)
+            if($async)
             {
-                Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader -Body $Body
+                Write-verbose "Invoking async rest with body" 
+                $return = start-job -ScriptBlock {param($URI,$Header,$body) Invoke-RestMethod -Method post -Uri $URI -Headers $Header -Body $Body} -ArgumentList $CallURI,$authHeader,$Body
             }
-            Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader
+            else
+            {
+                if($Body -ne $null)
+                {
+                    Write-verbose "Invoking rest with body"                
+                    $return = Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader -Body $Body #-ContentType 'application/json'
+                    #return $return
+                }
+                else
+                {
+                    Write-verbose "Invoking rest w/o body"
+                    $return = Invoke-RestMethod -Method post -Uri $CallURI -Headers $authHeader
+                }
+            }
+
+            
+            write-verbose "$CallURI"
+            if($CallURI -like '*$batch*')
+            {
+                return $return
+            }
+
             $OdataTag = $($return."@odata.context")
             if($return.value -ne $null)
             {
@@ -124,9 +162,12 @@ Function Invoke-GraphCall
         }
         catch 
         {
-            $_.exeption
+            throw $_
         }
     }
 
-    return $return|Add-OdataToReturn -odatatag $OdataTag
+    if($return -ne $null)
+    {
+        return $return|Add-OdataToReturn -odatatag $OdataTag
+    }
 }
