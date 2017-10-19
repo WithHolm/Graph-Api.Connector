@@ -3,9 +3,6 @@ New-Variable GraphConfigRoot -Scope Script -Value "$PSScriptRoot\config"
 New-Variable GraphCacheRoot -Scope Script -Value "$PSScriptRoot\cache"
 New-Variable GraphAPIConfigFile -Scope Script -Value (join-path "$PSScriptRoot\Config" "Config.json") -Force
 
-#import Logger
-#import-module "$Script:graphmoduleroot\Modules\Communary.Logger\communary.logger.psd1" -Force
-
 Function New-GraphAPIConfigFile
 {
 @'   
@@ -36,7 +33,7 @@ Function New-GraphAPIConfigFile
 
 Function Get-GraphAPIConfigFile
 {
-    if((get-item $Script:GraphAPIConfigFile -ErrorAction SilentlyContinue) -eq $null)
+    if(!(test-path $Script:GraphAPIConfigFile))
     {
         New-GraphAPIConfigFile
     }
@@ -51,7 +48,9 @@ New-Variable GraphVersion -Scope Script -Value (Get-GraphAPIConfigFile).GraphVer
 New-Variable Odata_registry -Scope Script -Value @() -Force
 
 #load Files
-get-childitem "$psscriptroot\Functions" -Filter "lib_*.ps1" -Recurse | ForEach-Object{. $_.FullName}
+#measure-command {[io.directory]::GetFiles("$psscriptroot\Functions",'lib_*.ps1',[System.IO.SearchOption]::AllDirectories)}
+$(get-childitem "$psscriptroot\Functions" -Recurse -Include "lib_*.ps1","priv_*.ps1","pub_*.ps1").foreach{. $_.FullName}
+#$(get-childitem "$psscriptroot\Functions" -Filter "lib_*.ps1" -Recurse)
 
 #Import Odata
 import-odata

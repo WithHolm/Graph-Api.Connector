@@ -34,7 +34,7 @@ Function Wait-Event
             Write-verbose "Waiting for event '$($event.Action.Name)' to finish"
             while((Get-EventSubscriber|where{$_.SourceIdentifier -like $event.SourceIdentifier}).Action.State -eq "NotStarted" )
             {       
-                Start-Sleep -Milliseconds 100
+                Start-Sleep -Milliseconds 10
                 if($SW.ElapsedMilliseconds -gt ($WaitMaxSec * 1000))
                 {
                     throw "waiting for $($event.name) timed out after $maxwaitsec seconds"

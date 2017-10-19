@@ -25,6 +25,7 @@ function Read-Event
     {
         foreach($event in $Eventsub)
         {
+            Write-Verbose "Reading data from $($event.Action.name)"
             if($event.Action.State -eq "NotStarted")
             {
                 throw "The operation tied to this event ('$($event.Action.Name)') havent finished yet."

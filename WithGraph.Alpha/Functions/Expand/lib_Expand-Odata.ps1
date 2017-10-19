@@ -1,4 +1,4 @@
-Function Expand-Graphobject
+Function Expand-Graphobjectold
 {
     Param(
         [Parameter(Mandatory=$true, 

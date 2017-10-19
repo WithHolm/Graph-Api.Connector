@@ -2,55 +2,44 @@ InModuleScope $Global:modulename{
     Describe "Import-OdataRegistry. Creates a more nimble version of script:odata" -Tag "Odata","Integration"{
         
         #Imports odata from file or internet to $script:odata.
-        import-odata
+        
         context "Normal Operation"{
             $config = get-GraphAPIConfigFile
-         
+            import-odata
             Import-OdataRegistry
-            it "script:Odata_registry should have the correct amount of main properties (2:beta+v1.0)"{               
+            it "script:Odata_registry should have the correct amount of main properties ($($config.graphversion.avalible -join '+'))"{               
                 @((Get-OdataRegistry)|gm|where{$_.membertype -eq "Noteproperty"}).count|should be ($config.graphversion.avalible).count
             }
 
-            foreach($version in ($config.graphversion.avalible))
+            foreach($version in ((get-GraphAPIConfigFile).graphversion.avalible))
             {
-                describe $version{
-                    import-odata
-                    $odata = get-odata $version
-                    it "script:Odata_registry.$version Should have 2 sub properties"{
-                        ((Get-OdataRegistry).$version|gm|where{$_.membertype -eq "Noteproperty"}).count|should be 2
-                    }
-
-                    it "script:Odata_registry.$($version).odataregistry should have all odata entitysets"{
-                        ((Get-OdataRegistry).$version.odataregistry).count | should be $odata.entitycontainer.entityset.count
-                    }
-
-                    # it "script:Odata_registry.$($version).expands Should have all expandable objects in it"{
-                    #     $answer = $((get-odata $version).entitycontainer.entityset|where{$_.NavigationPropertyBinding -ne $null}).count
-                    #     ((get-odataregistry).$version.expands|gm|where{$_.membertype -eq "noteproperty"}).count | should be $answer
-                    # }
-
-                    describe "Test 3 random objects from $version odataregistry"{
-                        for($i=0; $i -lt 3;$i++)
-                        {
-                            $entityset = (get-odata $version).entitycontainer.entityset|get-random
-                            $entityname = $($entityset.entitytype.split('.')[-1])
-                            $entityobject = $odata.entitytype|Where-Object{$_.name -eq $entityname}
-                            $originodata = [pscustomobject]@{
-                                                            OdataName = $($entityset.name)
-                                                            Entityname = $entityname
-                                                            EntityFQN = $entityset.entitytype
-                                                        }
-                            $odatareg = (get-odataregistry).beta.odataregistry|where{$_.OdataName -eq $entityset.name}
-                            # write-host ($($originodata|gm|where{$_.membertype -eq "noteproperty"}).Name)
-                            foreach($testing in ($($originodata|gm|where{$_.membertype -eq "noteproperty"}).Name))
-                            {
-                                it "$($entityname): $testing is the same"{
-                                    $originodata.$testing | should be $odatareg.$testing
-                                }
-                            }
-                        }
-                    }
+                import-odata
+                $odata = get-odata $version
+                it "script:Odata_registry.$version Should have 2 sub properties"{
+                    ((Get-OdataRegistry).$version|gm|where{$_.membertype -eq "Noteproperty"}).count|should be 2
                 }
+
+                it "script:Odata_registry.$($version).odataregistry should have all odata entitysets"{
+                    ((Get-OdataRegistry).$version.odataregistry).count | should be $odata.entitycontainer.entityset.count
+                }
+                # for($i=0; $i -lt 3;$i++)
+                # {
+                #     $entityset = (get-odata $version).entitycontainer.entityset|get-random
+                #     $entityname = $($entityset.entitytype.split('.')[-1])
+                #     $entityobject = $odata.entitytype|Where-Object{$_.name -eq $entityname}
+                #     $originodata = [pscustomobject]@{
+                #                                     OdataName = $($entityset.name)
+                #                                     Entityname = $entityname
+                #                                     EntityFQN = $entityset.entitytype
+                #                                 }
+                #     $odatareg = (get-odataregistry).beta.odataregistry|where{$_.OdataName -eq $entityset.name}
+                #     foreach($testing in ($($originodata|gm|where{$_.membertype -eq "noteproperty"}).Name))
+                #     {
+                #         it "$version, $($entityname): $testing is the same"{
+                #             $originodata.$testing | should be $odatareg.$testing
+                #         }
+                #     }
+                # }
             }
 
             Mock get-GraphAPIConfigFile {

@@ -12,7 +12,7 @@ inmodulescope $Global:modulename{
         }
 
         it "Should have the same amount of childitems as there is api versions"{
-            $script:odata.count|should be ($config.graphversion.avalible).count
+            $script:odata.count|should be ((Get-GraphAPIConfigFile).graphversion.avalible).count
         }
     }
 

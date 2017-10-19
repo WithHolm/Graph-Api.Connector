@@ -35,7 +35,10 @@ Function Invoke-WebrequestAsync
         [hashtable]$body,
 
     [Parameter(Mandatory=$false)]
-        [switch]$passthru
+        [switch]$passthruWebclient,
+
+    [Parameter(Mandatory=$false)]
+        [switch]$PassthruEventWatcher
     )
 
     Get-EventSubscriber |where{$_.SourceIdentifier -eq $tag}|unregister-event
@@ -77,8 +80,13 @@ Function Invoke-WebrequestAsync
         }|out-null
     }
 
-    if($passthru)
+    if($passthruWebclient)
     {
         $web_client
     }
+    elseif ($PassthruEventWatcher) 
+    {
+        Get-EventSubscriber|where{$_.SourceIdentifier -eq "$Tag"}
+    }
+
 }

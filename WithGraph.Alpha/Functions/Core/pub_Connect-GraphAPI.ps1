@@ -31,6 +31,7 @@ Function Connect-GraphAPI
     #Get First instance of ADAL DLLs
     $AAD_common_Assembly = (get-childitem -Recurse -Path $AzurePath -Filter $AADCommonDLLName | Select-Object -First 1).fullname
     write-Verbose "Found '$AADCommonDLLName' at path '$AAD_common_Assembly'. Loading this."
+    #Add-Type $AAD_common_Assembly
     [System.Reflection.Assembly]::LoadFrom($AAD_common_Assembly) | out-null    
 
 
