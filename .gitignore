@@ -1,6 +1,3 @@
+Dev/Build/*.clixml
 
-Tests/Azurecred\.xml
-
-PesterTests/Core/AzureCred\.xml
-
-MSGraph\.Posh\.Alpha/Config\.json
+WithGraph.Alpha\.Posh\.Alpha/Config\.json

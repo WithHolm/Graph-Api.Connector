@@ -1,0 +1,64 @@
+﻿10/22/2017 4:48:16 PM INFORMATION ## Starting Build 2017/10/22 04:48. Module WithGraph.Alpha ##
+10/22/2017 4:48:16 PM INFORMATION ## Testphase ##
+10/22/2017 4:48:25 PM INFORMATION 12 tests failed:
+10/22/2017 4:49:19 PM INFORMATION ## Starting Build 2017/10/22 04:49. Module WithGraph.Alpha ##
+10/22/2017 4:49:19 PM INFORMATION ## Testphase ##
+10/22/2017 4:49:26 PM INFORMATION 18 tests failed
+10/22/2017 4:49:47 PM INFORMATION ## Starting Build 2017/10/22 04:49. Module WithGraph.Alpha ##
+10/22/2017 4:49:47 PM INFORMATION ## Testphase ##
+10/22/2017 4:49:52 PM INFORMATION 18 tests failed
+10/22/2017 5:27:23 PM INFORMATION ## Starting Build 2017/10/22 05:27. Module WithGraph.Alpha ##
+10/22/2017 5:27:23 PM INFORMATION ## Testphase ##
+10/22/2017 5:27:25 PM INFORMATION 12 tests failed
+10/22/2017 5:47:10 PM INFORMATION ## Starting Build 2017/10/22 05:47. Module WithGraph.Alpha ##
+10/22/2017 5:47:10 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 5:47:10 PM INFORMATION ## Testphase ##
+10/22/2017 5:47:16 PM INFORMATION 18 tests failed
+10/22/2017 5:50:04 PM INFORMATION ## Starting Build 2017/10/22 05:50. Module WithGraph.Alpha ##
+10/22/2017 5:50:04 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 5:50:04 PM INFORMATION ## Testphase ##
+10/22/2017 5:50:09 PM INFORMATION 17 tests failed
+10/22/2017 5:50:48 PM INFORMATION ## Starting Build 2017/10/22 05:50. Module WithGraph.Alpha ##
+10/22/2017 5:50:48 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 5:50:48 PM INFORMATION ## Testphase ##
+10/22/2017 5:50:53 PM INFORMATION 17 tests failed
+10/22/2017 5:59:59 PM INFORMATION ## Starting Build 2017/10/22 05:59. Module WithGraph.Alpha ##
+10/22/2017 5:59:59 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 5:59:59 PM INFORMATION ## Testphase ##
+10/22/2017 6:00:05 PM INFORMATION 11 tests failed
+10/22/2017 6:06:43 PM INFORMATION ## Starting Build 2017/10/22 06:06. Module WithGraph.Alpha ##
+10/22/2017 6:06:43 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 6:06:43 PM INFORMATION ## Testphase ##
+10/22/2017 6:06:49 PM INFORMATION 6 tests failed
+10/22/2017 6:07:47 PM INFORMATION ## Starting Build 2017/10/22 06:07. Module WithGraph.Alpha ##
+10/22/2017 6:07:47 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/22/2017 6:07:47 PM INFORMATION ## Testphase ##
+10/22/2017 6:07:52 PM INFORMATION 6 tests failed
+10/24/2017 9:24:26 PM INFORMATION ## Starting Build 2017/10/24 09:24. Module WithGraph.Alpha ##
+10/24/2017 9:24:26 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/24/2017 9:24:26 PM INFORMATION ## Testphase ##
+10/24/2017 9:25:25 PM INFORMATION ## Starting Build 2017/10/24 09:25. Module WithGraph.Alpha ##
+10/24/2017 9:25:25 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/24/2017 9:25:25 PM INFORMATION ## Testphase ##
+10/26/2017 9:59:06 PM INFORMATION ## Starting Build 2017/10/26 09:59. Module: WithGraph.Alpha ##
+10/26/2017 9:59:06 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 9:59:06 PM INFORMATION ## Testphase ##
+10/26/2017 9:59:11 PM INFORMATION 8 tests failed
+10/26/2017 9:59:52 PM INFORMATION ## Starting Build 2017/10/26 09:59. Module: WithGraph.Alpha ##
+10/26/2017 9:59:52 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 9:59:52 PM INFORMATION ## Testphase ##
+10/26/2017 9:59:54 PM INFORMATION 8 tests failed
+10/26/2017 10:00:34 PM INFORMATION ## Starting Build 2017/10/26 10:00. Module: WithGraph.Alpha ##
+10/26/2017 10:00:34 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 10:00:34 PM INFORMATION ## Testphase ##
+10/26/2017 10:01:18 PM INFORMATION 5 tests failed
+10/26/2017 10:03:14 PM INFORMATION ## Starting Build 2017/10/26 10:03. Module: WithGraph.Alpha ##
+10/26/2017 10:03:14 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 10:03:14 PM INFORMATION ## Testphase ##
+10/26/2017 10:04:09 PM INFORMATION ## Starting Build 2017/10/26 10:04. Module: WithGraph.Alpha ##
+10/26/2017 10:04:09 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 10:04:09 PM INFORMATION ## Testphase ##
+10/26/2017 10:04:43 PM INFORMATION 5 tests failed
+10/26/2017 10:18:51 PM INFORMATION ## Starting Build 2017/10/26 10:18. Module: WithGraph.Alpha ##
+10/26/2017 10:18:51 PM INFORMATION ## C:\git\MSGraph.Posh.Alpha\Dev\WithGraph.Alpha ##
+10/26/2017 10:18:51 PM INFORMATION ## Testphase ##
